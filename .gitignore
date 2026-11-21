@@ -3,4 +3,5 @@ zmk/
 modules/
 tools/
 .west/
-AGENTS.md
+AGENTS.md__pycache__/
+*.pyc

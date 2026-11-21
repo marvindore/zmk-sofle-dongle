@@ -14,6 +14,7 @@
 #define LAYER_Raise 2
 #define LAYER_Macros 3
 #define LAYER_Magic 4
+#define LAYER_Mouse 5
 
 /*
  * Sofle Eyelash key index reference (64 keys total):
@@ -201,21 +202,9 @@
     combos {
         compatible = "zmk,combos";
 
-        /* Soft-off: Q + S + Z (kept from original Sofle config) */
-        softoff {
-            bindings = <&soft_off>;
-            key-positions = <14 28 40>;
-        };
-
         /* Right Enter: J + K */
         combo_RightEnt {
             key-positions = <34 35>;
-            bindings = <&kp RET>;
-        };
-
-        /* Left Enter: C + V */
-        combo_LeftEnt {
-            key-positions = <42 43>;
             bindings = <&kp RET>;
         };
 
@@ -223,6 +212,12 @@
         combo_OptBackspace {
             key-positions = <29 30>;
             bindings = <&kp LA(BSPC)>;
+        };
+
+        /* From Go60 firmware: ESC + Spc */
+        combo_ESC_Spc {
+            key-positions = <26 57>;
+            bindings = <&kp RET>;
         };
     };
 };
@@ -240,22 +235,20 @@
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
          * │ TAB  │  Q   │  W   │  E   │  R   │  T   │ │      │ │  Y   │  U   │  I   │  O   │  P   │  -   │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │ ESC  │Ctrl/A│Alt/S │Gui/D │Rai/F │  G   │ │      │ │  H   │Rai/J │Gui/K │Alt/L │Ctrl/;│  '   │
+         * │ ESC  │Ctrl/A│Alt/S │Gui/D │  F   │  G   │ │      │ │  H   │  J   │Gui/K │Alt/L │Ctrl/;│  '   │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │LSft/ │Mag/Z │  X   │  C   │  V   │  B   │ │      │ │  N   │  M   │  ,   │  .   │  /   │RSft/ │
-         * │Opt+← │      │      │      │      │      │ │      │ │      │      │      │      │      │Opt+→ │
-         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤      │
-         * │ MUTE │ CTRL │ ALT  │slMac │Cmd/  │Tog/  │ │      │ │Tog/  │Cmd/  │slMac │  [   │  ]   │      │
-         * │      │      │      │      │SftSh │Space │ │      │ │Space │SftSh │      │      │      │      │
-         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘      │
+         * │Sft/⌥←│  Z   │  X   │  C   │  V   │  B   │ │      │ │  N   │  M   │  ,   │  .   │  /   │Sft/⌥→│
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │C_MUTE│ Ctrl │ Alt  │Macros│Gui/Sf│ Spc  │ │      │ │ Spc  │Gui/Sf│Macros│  [   │  ]   │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
          */
         layer_Base {
             bindings = <
-&kp GRAVE           &kp N1                        &kp N2                       &kp N3                       &kp N4                          &kp N5                          &none   &kp N6                          &kp N7                           &kp N8                       &kp N9                           &kp N0                 &kp BSPC
-&kp TAB             &kp Q                         &kp W                        &kp E                        &kp R                           &kp T                           &none   &kp Y                           &kp U                            &kp I                        &kp O                            &kp P                  &kp MINUS
-&kp ESC             &HRM_Hold_Tap_lha LCTRL A     &HRM_Hold_Tap_lha LALT S     &HRM_Hold_Tap_lha LGUI D     &lt LAYER_Raise F               &kp G                           &none   &kp H                           &lt LAYER_Raise J                &HRM_Hold_Tap_rh RGUI K      &HRM_Hold_Tap_rh RALT L          &HRM_Hold_Tap_rh RCTRL SEMI  &kp SQT
-&mt LSHFT LA(LEFT)  &lt_optimized LAYER_Magic Z   &kp X                        &kp C                        &kp V                           &kp B                           &none   &kp N                           &kp M                            &kp COMMA                    &kp DOT                          &kp FSLH               &mt RSHFT LA(RIGHT)
-&kp C_MUTE          &kp LCTRL                     &kp LALT                     &sl LAYER_Macros              &cmd_sticky_shift LGUI LSHIFT   &lt LAYER_Toggles SPACE         &none   &lt LAYER_Toggles SPACE         &cmd_sticky_shift RGUI RSHIFT    &sl LAYER_Macros             &kp LBKT                         &kp RBKT
+&kp GRAVE           &kp N1                       &kp N2                    &kp N3                    &kp N4                        &kp N5                   &none  &kp N6                   &kp N7                        &kp N8                   &kp N9                   &kp N0                       &kp BSPC
+&kp TAB             &kp Q                        &kp W                     &kp E                     &kp R                         &kp T                    &none  &kp Y                    &kp U                         &kp I                    &kp O                    &kp P                        &kp MINUS
+&kp ESC             &HRM_Hold_Tap_lha LCTRL A    &HRM_Hold_Tap_lha LALT S  &HRM_Hold_Tap_lha LGUI D  &lt LAYER_Raise F             &lt LAYER_Mouse G        &none  &lt LAYER_Mouse H        &lt LAYER_Raise J             &HRM_Hold_Tap_rh RGUI K  &HRM_Hold_Tap_rh RALT L  &HRM_Hold_Tap_rh RCTRL SEMI  &kp SQT
+&mt LSHFT LA(LEFT)  &lt_optimized LAYER_Magic Z  &kp X                     &kp C                     &kp V                         &kp B                    &none  &kp N                    &kp M                         &kp COMMA                &kp DOT                  &kp FSLH                     &mt RSHFT LA(RIGHT)
+&kp C_MUTE          &kp LCTRL                    &kp LALT                  &sl LAYER_Macros          &cmd_sticky_shift LGUI LSHFT  &lt LAYER_Toggles SPACE  &none  &lt LAYER_Toggles SPACE  &cmd_sticky_shift RGUI RSHFT  &sl LAYER_Macros         &kp LBKT                 &kp RBKT
             >;
             sensor-bindings = <&rsr_vol &rsr_trans>;
             display-name = "Base";
@@ -264,24 +257,24 @@
         /*
          * TOGGLES LAYER (Navigation + Function keys)
          * ┌──────┬──────┬──────┬──────┬──────┬──────┐ ┌──────┐ ┌──────┬──────┬──────┬──────┬──────┬──────┐
-         * │ MUTE │  F1  │  F2  │  F3  │  F4  │  F5  │ │      │ │  F6  │  F7  │  F8  │  F9  │ F10  │ F11  │
+         * │C_MUTE│  F1  │  F2  │  F3  │  F4  │  F5  │ │      │ │  F6  │  F7  │  F8  │  F9  │ F10  │ F11  │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │ TAB  │S+TAB │ END  │ HOME │      │Ctrl+\│ │      │ │ F12  │      │      │      │  |   │  +   │
+         * │ TAB  │  ⌘←  │ HOME │PG_UP │  ▽   │  ⌃\  │ │      │ │ F12  │  ▽   │  ▽   │  ▽   │  ⇧\  │  ⇧=  │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │  ]c  │  [c  │PgDn  │PgUp  │Opt+Z │Opt+X │ │      │ │  ←   │  ↓   │  ↑   │  →   │  _   │  =   │
+         * │ CAPS │Ctrl/⌘│Alt/EN│Gui/PG│  ⌥Z  │  ⌥X  │ │      │ │  ←   │  ↓   │  ↑   │  →   │  ⇧-  │  =   │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │ CAPS │      │      │      │⌥⇧H  │⌥⇧L  │ │      │ │ S+←  │ S+↓  │ S+↑  │ S+→  │  \   │ MUTE │
-         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤      │
-         * │ MUTE │ CTRL │ ALT  │ GUI  │ GUI  │ENTER │ │      │ │ENTER │ RGUI │      │      │      │      │
-         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘      │
+         * │ Sft  │  ▽   │  ▽   │  ▽   │ ⇧⌥H  │ ⇧⌥L  │ │      │ │  ⇧←  │  ⇧↓  │  ⇧↑  │  ⇧→  │  \   │ Sft  │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │C_MUTE│ Ctrl │ Alt  │ Gui  │ Gui  │ Spc  │ │      │ │ Spc  │ Gui  │ Gui  │ Alt  │ Ctrl │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
          */
         layer_Toggles {
             bindings = <
-&kp C_MUTE      &kp F1              &kp F2      &kp F3      &kp F4          &kp F5              &none   &kp F6          &kp F7          &kp F8      &kp F9          &kp F10         &kp F11
-&kp TAB         &kp LS(TAB)         &kp END     &kp HOME    &trans          &kp LC(BSLH)        &none   &kp F12         &trans          &trans      &trans          &kp LS(BSLH)    &kp LS(EQUAL)
-&next_change    &previous_change    &kp PG_DN   &kp PG_UP   &kp LA(Z)       &kp LA(X)           &none   &kp LEFT        &kp DOWN        &kp UP      &kp RIGHT       &kp LS(MINUS)   &kp EQUAL
-&kp CAPS        &trans              &trans      &trans      &kp LA(LS(H))   &kp LA(LS(L))       &none   &kp LS(LEFT)    &kp LS(DOWN)    &kp LS(UP)  &kp LS(RIGHT)   &kp BSLH        &kp C_MUTE
-&kp C_MUTE      &kp LCTRL           &kp LALT    &kp LGUI    &kp LGUI        &kp RET             &none   &kp RET         &kp RGUI        &none       &none           &none
+&kp C_MUTE  &kp F1                             &kp F2                      &kp F3                        &kp F4         &kp F5         &none  &kp F6        &kp F7        &kp F8      &kp F9         &kp F10        &kp F11
+&kp TAB     &kp LG(LEFT)                       &kp HOME                    &kp PG_UP                     &trans         &kp LC(BSLH)   &none  &kp F12       &trans        &trans      &trans         &kp LS(BSLH)   &kp LS(EQUAL)
+&kp CAPS    &HRM_Hold_Tap_lha LCTRL LG(RIGHT)  &HRM_Hold_Tap_lha LALT END  &HRM_Hold_Tap_lha LGUI PG_DN  &kp LA(Z)      &kp LA(X)      &none  &kp LEFT      &kp DOWN      &kp UP      &kp RIGHT      &kp LS(MINUS)  &kp EQUAL
+&kp LSHFT   &trans                             &trans                      &trans                        &kp LS(LA(H))  &kp LS(LA(L))  &none  &kp LS(LEFT)  &kp LS(DOWN)  &kp LS(UP)  &kp LS(RIGHT)  &kp BSLH       &kp RSHFT
+&kp C_MUTE  &kp LCTRL                          &kp LALT                    &kp LGUI                      &kp LGUI       &kp SPACE      &none  &kp SPACE     &kp RGUI      &kp RGUI    &kp RALT       &kp RCTRL
             >;
             sensor-bindings = <&rsr_vol &rsr_trans>;
             display-name = "Toggle";
@@ -290,24 +283,24 @@
         /*
          * RAISE LAYER (Symbols + Numpad)
          * ┌──────┬──────┬──────┬──────┬──────┬──────┐ ┌──────┐ ┌──────┬──────┬──────┬──────┬──────┬──────┐
-         * │  `   │  ,   │  "   │  .   │  ;   │  $   │ │      │ │  ^   │  &   │  *   │  <   │  >   │ BSPC │
+         * │  `   │  ,   │  ⇧'  │  .   │  ;   │  ⇧4  │ │      │ │  ⇧6  │  ⇧7  │  ⇧8  │  ⇧,  │  ⇧.  │ BSPC │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │  !   │  <   │  >   │  |   │  {   │  }   │ │      │ │ ⌘C   │  7   │  8   │  9   │  -   │  *   │
+         * │  ⇧1  │  ⇧,  │  ⇧.  │  ⇧\  │  ⇧[  │  ⇧]  │ │      │ │      │KP_N7 │KP_N8 │KP_N9 │  -   │  ⇧8  │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │  #   │  \   │  /   │  _   │  (   │  )   │ │      │ │ ⌘V   │  4   │  5   │  6   │  +   │  =   │
+         * │  ⇧3  │  \   │  /   │  -   │  ⇧9  │  ⇧0  │ │      │ │      │KP_N4 │KP_N5 │KP_N6 │  ⇧=  │  =   │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │  $   │  ~   │  ?   │  -   │  [   │  ]   │ │      │ │  0   │  1   │  2   │  3   │  .   │  '   │
-         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤      │
-         * │      │  '   │  ;   │  %   │  @   │  :   │ │      │ │      │Ctrl+X│⇧⌃V   │ KP0  │  .   │      │
-         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘      │
+         * │  ⇧4  │  ⇧`  │  ⇧/  │  ⇧-  │  [   │  ]   │ │      │ │      │KP_N1 │KP_N2 │KP_N3 │  .   │  '   │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │  ▽   │  '   │  ;   │  ⇧5  │  ⇧2  │  ⇧;  │ │      │ │  ▽   │  ⌃X  │ ⌃⇧V  │KP_N0 │  .   │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
          */
         layer_Raise {
             bindings = <
-&kp GRAVE       &kp COMMA       &kp LS(SQT)     &kp DOT         &kp SEMI        &kp LS(N4)      &none   &kp LS(N6)      &kp LS(N7)      &kp LS(N8)      &kp LS(COMMA)   &kp LS(DOT)     &kp BSPC
-&kp LS(N1)      &kp LS(COMMA)   &kp LS(DOT)     &kp LS(BSLH)    &kp LS(LBKT)    &kp LS(RBKT)    &none   &kp LG(C)       &kp KP_N7       &kp KP_N8       &kp KP_N9       &kp MINUS       &kp LS(N8)
-&kp LS(N3)      &kp BSLH        &kp FSLH        &kp LS(MINUS)   &kp LS(N9)      &kp LS(N0)      &none   &kp LG(V)       &kp KP_N4       &kp KP_N5       &kp KP_N6       &kp LS(EQUAL)   &kp EQUAL
-&kp LS(N4)      &kp LS(GRAVE)   &kp LS(FSLH)    &kp MINUS       &kp LBKT        &kp RBKT        &none   &kp KP_N0       &kp KP_N1       &kp KP_N2       &kp KP_N3       &kp DOT         &kp SQT
-&trans          &kp SQT         &kp SEMI        &kp LS(N5)      &kp LS(N2)      &kp LS(SEMI)    &none   &trans          &kp LC(X)       &kp LS(LC(V))   &kp KP_N0       &kp DOT
+&kp GRAVE   &kp COMMA      &kp LS(SQT)   &kp DOT        &kp SEMI      &kp LS(N4)    &none  &kp LS(N6)  &kp LS(N7)  &kp LS(N8)     &kp LS(COMMA)  &kp LS(DOT)    &kp BSPC
+&kp LS(N1)  &kp LS(COMMA)  &kp LS(DOT)   &kp LS(BSLH)   &kp LS(LBKT)  &kp LS(RBKT)  &none  &none       &kp KP_N7   &kp KP_N8      &kp KP_N9      &kp MINUS      &kp LS(N8)
+&kp LS(N3)  &kp BSLH       &kp FSLH      &kp MINUS      &kp LS(N9)    &kp LS(N0)    &none  &none       &kp KP_N4   &kp KP_N5      &kp KP_N6      &kp LS(EQUAL)  &kp EQUAL
+&kp LS(N4)  &kp LS(GRAVE)  &kp LS(FSLH)  &kp LS(MINUS)  &kp LBKT      &kp RBKT      &none  &none       &kp KP_N1   &kp KP_N2      &kp KP_N3      &kp DOT        &kp SQT
+&trans      &kp SQT        &kp SEMI      &kp LS(N5)     &kp LS(N2)    &kp LS(SEMI)  &none  &trans      &kp LC(X)   &kp LC(LS(V))  &kp KP_N0      &kp DOT
             >;
             sensor-bindings = <&rsr_vol &rsr_trans>;
             display-name = "Raise";
@@ -318,22 +311,22 @@
          * ┌──────┬──────┬──────┬──────┬──────┬──────┐ ┌──────┐ ┌──────┬──────┬──────┬──────┬──────┬──────┐
          * │      │ F11  │ F12  │ F13  │ F14  │ F15  │ │      │ │ F16  │ F17  │ F18  │ F19  │ F20  │ F21  │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │      │⌃⌘Q  │      │⇧⌘SPC│      │      │ │      │ │      │⇧⌘U  │⌃⇧I  │      │      │      │
+         * │      │ ⌃⌘Q  │      │⌃⇧⌥⌘E │      │      │ │      │ │      │⌃⇧⌥⌘U │⌃⇧⌥⌘I │      │      │      │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
          * │      │      │      │      │      │      │ │      │ │      │      │      │      │      │      │
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │      │      │      │⌃⇧C  │      │⇧⌘B  │ │      │ │      │⌃⇧M  │      │      │      │      │
-         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤      │
-         * │      │      │      │      │      │⌃⇧⌘SP│ │      │ │⌃⇧⌘SP│      │      │      │      │      │
-         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘      │
+         * │      │      │      │⌃⇧⌥⌘C │      │⌃⇧⌥⌘B │ │      │ │      │⌃⇧⌥⌘M │      │      │      │      │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │  ▽   │      │      │      │      │⌃⇧⌘Spc│ │      │ │⌃⇧⌘Spc│      │      │      │      │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
          */
         layer_Macros {
             bindings = <
-&none       &kp F11         &kp F12     &kp F13             &kp F14     &kp F15             &none   &kp F16                     &kp F17         &kp F18         &kp F19     &kp F20     &kp F21
-&none       &kp LC(LG(Q))   &none       &kp LS(LG(SPACE))   &none       &none               &none   &none                       &kp LG(LS(U))   &kp LC(LS(I))   &none       &none       &none
-&none       &none           &none       &none               &none       &none               &none   &none                       &none           &none           &none       &none       &none
-&none       &none           &none       &kp LC(LS(C))       &none       &kp LG(LS(B))       &none   &none                       &kp LS(LC(M))   &none           &none       &none       &none
-&trans      &none           &none       &none               &none       &kp LC(LS(LG(SPACE)))   &none   &kp LC(LS(LG(SPACE)))   &none           &none           &none       &none
+&none   &kp F11        &kp F12  &kp F13                &kp F14  &kp F15                &none  &kp F16                &kp F17                &kp F18                &kp F19  &kp F20  &kp F21
+&none   &kp LC(LG(Q))  &none    &kp LC(LS(LA(LG(E))))  &none    &none                  &none  &none                  &kp LC(LS(LA(LG(U))))  &kp LC(LS(LA(LG(I))))  &none    &none    &none
+&none   &none          &none    &none                  &none    &none                  &none  &none                  &none                  &none                  &none    &none    &none
+&none   &none          &none    &kp LC(LS(LA(LG(C))))  &none    &kp LC(LS(LA(LG(B))))  &none  &none                  &kp LC(LS(LA(LG(M))))  &none                  &none    &none    &none
+&trans  &none          &none    &none                  &none    &kp LC(LS(LG(SPACE)))  &none  &kp LC(LS(LG(SPACE)))  &none                  &none                  &none    &none
             >;
             sensor-bindings = <&rsr_vol &rsr_trans>;
             display-name = "Macro";
@@ -343,27 +336,53 @@
          * MAGIC LAYER (System, BT, RGB)
          * Activated by holding Z on Base layer
          * ┌──────┬──────┬──────┬──────┬──────┬──────┐ ┌──────┐ ┌──────┬──────┬──────┬──────┬──────┬──────┐
-         * │BT CLR│Bri-  │Bri+  │ Prev │ Next │ Play │ │      │ │ MUTE │ Vol- │ Vol+ │      │      │BTCLRA│
+         * │BT_CLR│C_BRI_│C_BRI_│C_PREV│C_NEXT│ C_PP │ │      │ │C_MUTE│C_VOL_│C_VOL_│      │      │BT_CLR│
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │ BOOT │RGBSPI│RGBSAI│RGBHUI│RGBBRI│RGBTOG│ │      │ │      │      │      │      │      │ BOOT │
+         * │bootlo│RGB_SP│RGB_SA│RGB_HU│RGB_BR│RGB_TO│ │      │ │      │      │      │      │      │bootlo│
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │RESET │RGBSPD│RGBSAD│RGBHUD│RGBBRD│RGBEFF│ │      │ │      │      │      │      │      │RESET │
+         * │sys_re│RGB_SP│RGB_SA│RGB_HU│RGB_BR│RGB_EF│ │      │ │      │      │      │      │      │sys_re│
          * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
-         * │      │      │ BT0  │ BT1  │ BT2  │ BT3  │ │      │ │      │      │      │      │      │toMacr│
-         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤      │
-         * │      │ USB  │      │      │      │      │ │      │ │      │      │      │      │      │      │
-         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘      │
+         * │      │      │ bt_0 │ bt_1 │ bt_2 │ bt_3 │ │      │ │      │      │      │      │      │Macros│
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │      │OUT_US│      │      │      │      │ │      │ │      │      │      │      │      │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
          */
         layer_Magic {
             bindings = <
-&bt BT_CLR      &kp C_BRI_DN        &kp C_BRI_UP        &kp C_PREV          &kp C_NEXT          &kp C_PP            &none   &kp C_MUTE      &kp C_VOL_DN    &kp C_VOL_UP    &none       &none       &bt BT_CLR_ALL
-&bootloader     &rgb_ug RGB_SPI     &rgb_ug RGB_SAI      &rgb_ug RGB_HUI     &rgb_ug RGB_BRI     &rgb_ug RGB_TOG     &none   &none           &none           &none           &none       &none       &bootloader
-&sys_reset      &rgb_ug RGB_SPD     &rgb_ug RGB_SAD      &rgb_ug RGB_HUD     &rgb_ug RGB_BRD     &rgb_ug RGB_EFF     &none   &none           &none           &none           &none       &none       &sys_reset
-&none           &none               &bt_0                &bt_1               &bt_2               &bt_3               &none   &none           &none           &none           &none       &none       &to LAYER_Macros
-&none           &out OUT_USB        &none                &none               &none               &none               &none   &none           &none           &none           &none       &none
+&bt BT_CLR   &kp C_BRI_DN     &kp C_BRI_UP     &kp C_PREV       &kp C_NEXT       &kp C_PP         &none  &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP  &none  &none  &bt BT_CLR_ALL
+&bootloader  &rgb_ug RGB_SPI  &rgb_ug RGB_SAI  &rgb_ug RGB_HUI  &rgb_ug RGB_BRI  &rgb_ug RGB_TOG  &none  &none       &none         &none         &none  &none  &bootloader
+&sys_reset   &rgb_ug RGB_SPD  &rgb_ug RGB_SAD  &rgb_ug RGB_HUD  &rgb_ug RGB_BRD  &rgb_ug RGB_EFF  &none  &none       &none         &none         &none  &none  &sys_reset
+&none        &none            &bt_0            &bt_1            &bt_2            &bt_3            &none  &none       &none         &none         &none  &none  &to LAYER_Macros
+&none        &out OUT_USB     &none            &none            &none            &none            &none  &none       &none         &none         &none  &none
             >;
             sensor-bindings = <&rsr_vol &rsr_trans>;
             display-name = "Magic";
         };
+        /*
+         * MOUSE LAYER (generated from Go60 firmware)
+         * ┌──────┬──────┬──────┬──────┬──────┬──────┐ ┌──────┐ ┌──────┬──────┬──────┬──────┬──────┬──────┐
+         * │      │      │      │      │      │      │ │      │ │      │      │      │      │      │      │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
+         * │      │      │      │      │      │      │ │      │ │      │      │      │      │      │      │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
+         * │      │      │SCRL_L│SCRL_D│SCRL_U│SCRL_R│ │      │ │      │      │MOVE_Y│      │ MB2  │      │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┼──────┤
+         * │ MB4  │      │      │      │      │      │ │      │ │      │MOVE_X│MOVE_Y│MOVE_X│ MB1  │ MB5  │
+         * ├──────┼──────┼──────┼──────┼──────┼──────┤ │      │ ├──────┼──────┼──────┼──────┼──────┤
+         * │      │      │      │      │      │ Ent  │ │      │ │ Ent  │      │      │      │      │
+         * └──────┴──────┴──────┴──────┴──────┴──────┘ └──────┘ └──────┴──────┴──────┴──────┴──────┘
+         */
+        layer_Mouse {
+            bindings = <
+&none     &none  &none           &none           &none         &none            &none  &none    &none               &none               &none              &none     &none
+&none     &none  &none           &none           &none         &none            &none  &none    &none               &none               &none              &none     &none
+&none     &none  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none  &none    &none               &mmv MOVE_Y(-1200)  &none              &mkp MB2  &none
+&mkp MB4  &none  &none           &none           &none         &none            &none  &none    &mmv MOVE_X(-1200)  &mmv MOVE_Y(1200)   &mmv MOVE_X(1200)  &mkp MB1  &mkp MB5
+&none     &none  &none           &none           &none         &kp RET          &none  &kp RET  &none               &none               &none              &none
+            >;
+            sensor-bindings = <&rsr_vol &rsr_trans>;
+            display-name = "Mouse";
+        };
+
     };
 };

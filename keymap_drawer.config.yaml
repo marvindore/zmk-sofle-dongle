@@ -1,99 +1,80 @@
 draw_config:
   n_columns: 1
   draw_key_sides: true
-  key_w: 60.0
-  key_h: 56.0
-  split_gap: 30.0
-  combo_w: 28.0
-  combo_h: 26.0
-  key_rx: 6.0
-  key_ry: 6.0
-  inner_pad_w: 2.0
-  inner_pad_h: 2.0
-  outer_pad_w: 40.0
-  outer_pad_h: 56.0
+  key_w: 64.0
+  key_h: 60.0
+  split_gap: 36.0
+  combo_w: 30.0
+  combo_h: 28.0
+  key_rx: 10.0
+  key_ry: 10.0
+  inner_pad_w: 3.0
+  inner_pad_h: 3.0
+  outer_pad_w: 48.0
+  outer_pad_h: 64.0
   line_spacing: 1.2
-  arc_radius: 6.0
-  append_colon_to_layer_header: true
-  small_pad: 2.0
+  arc_radius: 8.0
+  append_colon_to_layer_header: false
+  small_pad: 3.0
+  dark_mode: false
   svg_extra_style: |
-    /* For default sytles, see https://github.com/caksoylar/keymap-drawer/blob/main/keymap_drawer/config.py#L85 */
-
+    /* Modern theme. Colours are CSS variables so light/dark is a single switch. */
     svg.keymap {
-      font-family: Ubuntu Mono, Inconsolata, Consolas, Liberation Mono, Menlo, monospace;
-      font-size: 12px;
-      font-weight: bold;
+      --bg: #f4f6fb;
+      --key: #ffffff;
+      --key-side: #dfe4ef;
+      --key-border: #cfd5e3;
+      --text: #1b2233;
+      --muted: #7a8398;
+      --accent: #4f6bed;
+      --accent-soft: #e4e9ff;
+      --held: #fff3c4;
+      --combo: #e9fbf1;
+      --combo-border: #2fb67c;
+      font-family: "Inter", "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
       text-rendering: optimizeLegibility;
     }
+    @media (prefers-color-scheme: dark) {
+      svg.keymap:not(.light) {
+        --bg: #0f1420; --key: #1c2333; --key-side: #141a28; --key-border: #2c364d;
+        --text: #e8ecf6; --muted: #8b95ad; --accent: #8ea2ff; --accent-soft: #28325a;
+        --held: #5a4b12; --combo: #12342a; --combo-border: #3ed598;
+      }
+    }
+    svg.keymap.dark {
+      --bg: #0f1420; --key: #1c2333; --key-side: #141a28; --key-border: #2c364d;
+      --text: #e8ecf6; --muted: #8b95ad; --accent: #8ea2ff; --accent-soft: #28325a;
+      --held: #5a4b12; --combo: #12342a; --combo-border: #3ed598;
+    }
+    rect.bg { fill: var(--bg); }
+    svg.keymap text, svg.keymap use { fill: var(--text); stroke: none; }
 
-    /* Color accent for held keys */
-    rect.held, rect.combo.held {
-        fill: #ffc;
-    }
+    /* Keycaps */
+    svg.keymap rect.key { fill: var(--key); stroke: var(--key-border); stroke-width: 1.2; }
+    svg.keymap rect.key.side { fill: var(--key-side); stroke: var(--key-border); }
+    svg.keymap rect.key.hold, svg.keymap rect.key.layer-activator { fill: var(--accent-soft); stroke: var(--accent); }
+    svg.keymap rect.held, svg.keymap rect.combo.held { fill: var(--held); }
+    svg.keymap rect.key.trans { fill: transparent; stroke-dasharray: 2 4; opacity: 0.55; }
+    svg.keymap rect.key.ghost, svg.keymap rect.key.none { fill: transparent; stroke-dasharray: 3 5; opacity: 0.35; }
+    svg.keymap rect.key.ghost.side, svg.keymap rect.key.none.side { opacity: 0; }
+    svg.keymap rect.key.bootloader { stroke: #e5484d; }
 
-    /* Technique borrowed and extended from https://github.com/englmaxi/zmk-config/blob/master/keymap-drawer/config.yaml */
-    .sym_sub_text.tap {
-      translate: -5px 2px;
-      font-size: 20px;
-    }
-    .sym_sub_text.shifted {
-      translate: 10px 13px;
-      font-size: 10px;
-      opacity: 1.0;
-    }
-    .combo.sym_sub_text.tap {
-      translate: -1px 1px;
-    }
-    .combo.sym_sub_text.shifted {
-      translate: 7px 5px;
-      font-size: 10px;
-      opacity: 1.0;
-    }
+    /* Legends */
+    svg.keymap text.key.tap, svg.keymap text.tap { font-size: 17px; font-weight: 700; }
+    svg.keymap text.hold { font-size: 11px; fill: var(--accent); font-weight: 700; letter-spacing: 0.4px; }
+    svg.keymap text.shifted { font-size: 11px; fill: var(--muted); font-weight: 600; }
+    svg.keymap text.trans, svg.keymap use.trans { opacity: 0.45; }
+    svg.keymap use.glyph { stroke: none; }
 
-    /* Toggle */
-    .toggle.shifted {
-      translate: -10px 12px;
-    }
+    /* Combos */
+    svg.keymap rect.combo { fill: var(--combo); stroke: var(--combo-border); stroke-width: 1.4; }
+    svg.keymap text.combo { font-size: 12px; }
 
-    .toggle.hold {
-      translate: 13px -23px;
-    }
-
-    /* Variant for tap-dances */
-    .tap_dance.tap {
-      translate: -7px 0px;
-      font-size: 12px;
-    }
-    .tap_dance.shifted {
-      translate: 7px 17px;
-      font-size: 12px;
-      opacity: 1.0;
-    }
-
-    /* Variant for symbol next to symbol */
-    .sym_by_sym.tap {
-      translate: -6px 0px;
-    }
-    .sym_by_sym.shifted {
-      translate: 10px 12px;
-      opacity: 1.0;
-    }
-
-    .combo.sym_by_sym.tap {
-      translate: -35px 0px;
-    }
-    .combo.sym_by_sym.shifted {
-      translate: 35px 20px;
-      opacity: 1.0;
-    }
-
-    .combo.sym_by_sym.hold {
-      visibility: hidden;
-    }
-
-    /* hide hold box for combo sym_by_sym */
-    .combo.sym_by_sym.hold > path[stroke="none"][fill="none"] {
-      visibility: hidden;
+    /* Layer titles */
+    svg.keymap text.label {
+      font-size: 22px; font-weight: 800; fill: var(--accent); letter-spacing: 0.5px;
     }
 
   shrink_wide_legends: 6
@@ -206,8 +187,44 @@ parse_config:
 
     # Empty
     "&none":
-      tap: $$mdi:minus-circle-outline$$
-      type: none
+      tap: ""
+      type: ghost
+
+    # Mouse layer
+    "&mkp MB1": {tap: $$mdi:mouse-left-click-outline$$}
+    "&mkp MB2": {tap: $$mdi:mouse-right-click-outline$$}
+    "&mkp MB3": {tap: $$mdi:mouse-scroll-wheel$$}
+    "&mkp MB4": {tap: $$mdi:arrow-left-bold-box-outline$$}
+    "&mkp MB5": {tap: $$mdi:arrow-right-bold-box-outline$$}
+    "&mmv MOVE_X(-1200)": {tap: $$mdi:menu-left$$, shifted: $$mdi:mouse$$}
+    "&mmv MOVE_X(1200)": {tap: $$mdi:menu-right$$, shifted: $$mdi:mouse$$}
+    "&mmv MOVE_Y(-1200)": {tap: $$mdi:menu-up$$, shifted: $$mdi:mouse$$}
+    "&mmv MOVE_Y(1200)": {tap: $$mdi:menu-down$$, shifted: $$mdi:mouse$$}
+
+    # Shifted symbols (LS(x)) rendered as the symbol itself
+    "&kp LS(N1)": {tap: "!"}
+    "&kp LS(N2)": {tap: "@"}
+    "&kp LS(N3)": {tap: "#"}
+    "&kp LS(N4)": {tap: "$"}
+    "&kp LS(N5)": {tap: "%"}
+    "&kp LS(N6)": {tap: "^"}
+    "&kp LS(N7)": {tap: "&"}
+    "&kp LS(N8)": {tap: "*"}
+    "&kp LS(N9)": {tap: "("}
+    "&kp LS(N0)": {tap: ")"}
+    "&kp LS(COMMA)": {tap: "<"}
+    "&kp LS(DOT)": {tap: ">"}
+    "&kp LS(FSLH)": {tap: "?"}
+    "&kp LS(SEMI)": {tap: ":"}
+    "&kp LS(SQT)": {tap: "\""}
+    "&kp LS(LBKT)": {tap: "{"}
+    "&kp LS(RBKT)": {tap: "}"}
+    "&kp LS(BSLH)": {tap: "|"}
+    "&kp LS(MINUS)": {tap: "_"}
+    "&kp LS(EQUAL)": {tap: "+"}
+    "&kp LS(GRAVE)": {tap: "~"}
+    "&soft_off": {tap: $$mdi:power$$}
+    "&to LAYER_Macros": {tap: Macro, hold: $$mdi:layers$$}
 
     # Whitespace
     "&bkspc_del":
