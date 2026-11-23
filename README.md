@@ -35,14 +35,54 @@ Home-row mods, combos (Enter, Option+Backspace) and an encoder for volume are de
 
 ## Building and flashing
 
-1. Push to GitHub. The **Build ZMK firmware** action builds everything listed in `build.yaml`:
-   - `eyelash_sofle_central_dongle dongle_display` (dongle, ZMK Studio enabled)
-   - `eyelash_sofle_peripheral_left nice_view`
-   - `eyelash_sofle_peripheral_right nice_view`
-   - `settings_reset`
-2. Download the firmware artifacts from the finished workflow run.
-3. Double-tap reset on each nice!nano and copy the matching `.uf2` onto the drive that appears.
-4. If pairing misbehaves, flash `settings_reset` on every board first, then the real firmware.
+Push to GitHub. The **Build ZMK firmware** action builds everything listed in `build.yaml`. Download the `firmware` artifact from the latest green run and unzip it.
+
+### Which file goes on which board
+
+The keyboard has three nice!nano v2 boards: the dongle (receiver with the screen), the left half and the right half.
+
+| Board | File |
+|-------|------|
+| Dongle (receiver with screen) | `eyelash_sofle_central_dongle_oled.uf2` |
+| Left half | `eyelash_sofle_peripheral_left nice_view-nice_nano_v2-zmk.uf2` |
+| Right half | `eyelash_sofle_peripheral_right nice_view-nice_nano_v2-zmk.uf2` |
+| All three boards (reset only) | `settings_reset-nice_nano_v2-zmk.uf2` |
+
+> **Warning:** Never put the `_left` file on the right half. Two left halves means the right half does not work.
+
+### How to flash one board
+
+1. Connect the board to the computer with USB.
+2. Double-tap the reset button. The `NICENANO` drive appears.
+3. Copy the `.uf2` file onto the drive.
+4. The board reboots and the drive disappears. A macOS "not ejected properly" message is normal.
+
+### Full flash (first setup, or pairing problems)
+
+Do the steps in this order. Flash `settings_reset` on every board before its real firmware.
+
+1. Switch off the left and right halves.
+2. Dongle: flash `settings_reset-nice_nano_v2-zmk.uf2`, then `eyelash_sofle_central_dongle_oled.uf2`.
+3. Left half: flash `settings_reset-nice_nano_v2-zmk.uf2`, then `eyelash_sofle_peripheral_left nice_view-nice_nano_v2-zmk.uf2`.
+4. Right half: flash `settings_reset-nice_nano_v2-zmk.uf2`, then `eyelash_sofle_peripheral_right nice_view-nice_nano_v2-zmk.uf2`.
+5. Connect the dongle to the computer with USB.
+6. Switch on the left half, then the right half.
+7. Wait until the dongle screen shows both halves connected.
+
+Why the reset is needed: the dongle and each half save Bluetooth pairing keys in their own memory. The halves only connect to a dongle that holds the keys they saved. `settings_reset` erases these keys on a board. After the reset, all three boards make new keys and pair again at first start. If you reset only one board, the saved keys no longer match and the halves do not connect. `settings_reset` does not store or copy keys. Reset all three boards in the same flash session.
+
+### Replace the dongle
+
+A new dongle has no keys that match the halves. Do the full flash above. Reset and flash the new dongle, and also reset and flash both halves. Flashing only the new dongle does not work.
+
+### Keymap-only update
+
+The keymap is stored on the dongle. Flash only `eyelash_sofle_central_dongle_oled.uf2` on the dongle. Do not use `settings_reset`.
+
+### Troubleshooting
+
+- One half does not type: make sure it has the file for its own side (`_left` or `_right`).
+- Halves do not connect to the dongle: do the full flash again. Use `settings_reset` on all three boards.
 
 ## Updating the keymap from a Go60
 
